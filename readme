@@ -1,0 +1,34 @@
+Key Findings About Kaspa Testnet 12 (TN12)
+Testnet 12 Features
+The covenant code you're looking at is part of KIP-17 (Kaspa Improvement Proposal 17), which includes:
+
+Covenant IDs for protocol-level transaction constraints
+Blake3 sequencing commitments for transaction ordering
+On-chain zero-knowledge verification (KIP-16) supporting Groth16 and RISC0
+L1 programmability enhancements
+Recommended Resources for TN12 Code
+KaspaDev's Gists (mentioned in the search results):
+
+Contains COVENANTS.md with architecture and example opcodes
+R&D documentation for covenants and vProgs
+GitHub: https://gist.github.com/KaspaDev
+Kaspanet Rusty-Kaspa Repository:
+
+Official reference implementation: https://github.com/kaspanet/rusty-kaspa
+Look for branches like covpp-reset1 for experimental covenant logic
+TN12 covenant implementations and tests
+Kaspa Improvement Proposals:
+
+KIP-17 (Covenants) documentation
+KIP-16 (ZK Verification)
+Repository: https://github.com/kaspanet/kips
+The Code Pattern You Showed
+The test_state_transition_with_spk_verification() test you shared demonstrates:
+
+CovenantBinding - linking outputs to covenant rules
+EngineFlags with covenants_enabled: true - enabling covenant verification
+CovenantsContext - managing covenant state and transitions
+State verification - ensuring output scripts match expected patterns
+This is part of the Silverscript SDK's covenant builder pattern, which is the primary way to write and test TN12 covenants.
+
+Note: Search results were limited. For the specific commit 5d987411 or direct repo access, you may need to visit the user's GitHub profile directly at https://github.com/5d987411 or check the main kaspanet repositories listed above.
