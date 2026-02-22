@@ -1,0 +1,33 @@
+pragma silverscript ^0.1.0;
+
+contract DeadManSwitch(pubkey owner, pubkey beneficiary, int checkInPeriod) {
+    // Last check-in timestamp (stored in contract state)
+    int lastCheckIn = tx.time;
+    
+    entrypoint function checkIn() {
+        // Owner can reset the timer by checking in
+        require(checkSig(sig ownerSig, owner));
+        
+        // Update state: move to next contract with updated lastCheckIn
+        validateOutputState(0, { lastCheckIn: tx.time });
+    }
+    
+    entrypoint function claimIfDeadman() {
+        // Beneficiary can claim funds if owner hasn't checked in
+        int timeSinceCheckIn = tx.time - lastCheckIn;
+        require(timeSinceCheckIn >= checkInPeriod);
+        
+        // Send funds to beneficiary
+        byte [34] beneficiaryScript = new ScriptPubKeyP2PK(beneficiary);
+        require(tx.outputs [0].scriptPubKey == beneficiaryScript);
+        require(tx.outputs [0].value >= tx.inputs[this.activeInputIndex].value - 1000);
+    }
+    
+    entrypoint function ownerReclaim() {
+        // Owner can always reclaim funds
+        require(checkSig(sig ownerSig, owner));
+        
+        byte [34] ownerScript = new ScriptPubKeyP2PK(owner);
+        require(tx.outputs [0].scriptPubKey == ownerScript);
+    }
+}
